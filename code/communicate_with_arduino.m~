@@ -1,0 +1,17 @@
+t=tcpclient('192.168.4.1',80);
+while true
+    x = inputdlg({'Wheel1','Wheel2','Wheel3','Wheel4'},...
+                        'Command', [1 7; 1 7; 1 7; 1 7]);
+    if isempty(x) || any(cellfun(@isempty,x))
+        break;
+    end
+    
+    x=cellfun(@str2num,x);
+    sum=0;
+    disp(x)
+    for i=1:4
+        sum=sum+mod(x(i),2*2^(8*(i-1));
+    end
+    write(t,uint32(sum))
+end
+delete(t)

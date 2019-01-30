@@ -1,0 +1,47 @@
+R=@(th)[cos(th) -sin(th);
+        sin(th)  cos(th)];
+n_motors=3;
+syms l L
+
+spi=sym(pi);
+
+P_0i=sym(zeros(2,n_motors));
+D_i=sym(zeros(2,n_motors));
+
+if n_motors==4
+    P_0i=[-l  l -l  l;
+          L   L -L -L];
+    D_i=[0 0 0 0;
+         1 1 1 1];
+else
+    for i=1:n_motors
+        P_0i(:,i)=R(2*spi*(i-1)/n_motors)*L*[1;0];
+        D_i(:,i)=(1/L)*R(spi/2)*P_0i(:,i);
+    end
+end
+
+syms t
+syms x(t) y(t) th(t)
+P_0=[x;y];
+
+
+r_i=sym(zeros(2,n_motors));
+v_i=sym(zeros(2,n_motors));
+u_i=sym(zeros(1,n_motors));
+
+for i=1:n_motors
+    r_i(:,i)=P_0+R(th)*P_0i(:,i);
+    v_i(:,i)=diff(P_0,t)+diff(R(th),t)*P_0i(:,i);
+    
+    u_i(:,i)=v_i(:,i).'*(R(th)*D_i(:,i));
+    
+end
+su_i=sym('u_i',[1,3]);
+
+X=[x;y;th];
+Xd=diff(X,t);
+syms xd yd thd
+sXd=[xd;yd;thd];
+[A,b]=equationsToMatrix(subs(u_i==su_i,Xd,sXd),Xd);
+Xd
+[A,b]=equationsToMatrix(subs(u_i==su_i,Xd,sXd),sXd)
