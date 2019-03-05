@@ -1,0 +1,377 @@
+\chapter{\ac{MPC} Formulation}
+
+An \ac{MPC} problem consists of a state vector which can be modified by a certain input following a set of inter-state equalities. The \ac{MPC} repeats these equalities, generating a fixed number (\lsymb{$N\in\Z_+$}{Number of stages hin the \ac{MPC} formulation}) of predicted stages. An objective function is defined which evaluates the performance of these stages. The \ac{MPC} solver finds, iteratively, the inputs that minimize this objective function. The search space can also be limited using constraints on the state vector.
+
+In our case, the inter-state equalities are the discretization of the dynamics defined previously with a fixed time-delta (denoted as \lsymb{$\Delta t\in\R_+$}{Time between stages in the \ac{MPC} formulation}). This discretization is done using the \ac{RK2} method. Therefore, each stage represents a time in the future and they are separated by $\Delta t$.
+
+The number of iterations that the solver will try to find the optimal solution depends on how difficult the problem is in each stage and is highly variable. However, we can limit it by a maximum number of iterations (denoted as \lsymb{$n_{maxit}\in\Z_+$}{Maximum number of iterations of the \ac{MPC} solver}).
+
+\section{Formal Definition}
+The formal definition of the \ac{MPC} problem is:
+\begin{align}
+\begin{array}{c l r}
+\underset{u_1,u_2\dots u_N}{\argmin} & \sum_{k=1}^{N}C(\vec x_k,\vec u_k,\vec s_k) & \text{(Cost Function)}\\\arrayrulecolor{lightgray}\hline
+\text{s.t.} & \vec x_1 = \vec x(t) & \text{(Inital condition)}\\
+& \vec x_{k+1} = f(\vec x_k,\vec u_k) & \text{(Discretised dynamics)}\\
+&I(\vec x_k,\vec u_k,\vec s_k) \ge \vec 0 &  \text{(Constraints)}
+\end{array}
+\label{eq::formal_def}
+\end{align}
+
+\section{Election of State Variables}
+To be able to use these dynamics in the \ac{MPC} problem, we need to create a state vector and write code to generate its derivative given the state and inputs.
+
+It is important to choose the state vector correctly so that the number of variables is minimized and singularities are prevented. 
+
+Throughout this thesis, we will denote the number of variables as \lsymb{$n_{var}\in\Z_{> 0}$}{Number of variables in the state vector} and the state vector as \others{$\vec{x}\in\R^{n_{var}}$}{State vector}.
+
+Considering the system definition introduced in section \ref{sect::system}, the most straightforward approach to choosing the state vector is the following:
+\begin{equation}
+\vec{x}=
+[\vec p_l ,\quad
+ \vec q_1 \dots \vec q_i \dots \vec q_n ,\quad
+ \vec{\dot{p}}_l ,\quad
+ \vec w_1 \dots \vec w_i \dots \vec w_n ,\quad
+ \vec{ss}_1 \dots \vec{ss}_i \dots \vec{ss}_n
+]
+\label{eq::state_naive}
+\end{equation}
+
+\subsection{Reducing $q_i$}
+However, as introduced in \cite{Potdar2018} it is best to use payload angles for the state vector, as they reduce the number of variables. These angles are represented in \cref{fig::angles} and are denoted by \gsymb{$\vartheta_i\in\R$}{First payload angle of the $i$-th quadrotor} and \gsymb{$\varphi_i\in\R$}{Second payload angle of the $i$-th quadrotor}. Using these angles we can define each of the $\vec q_i$ vectors in the following way:
+
+\usetikzlibrary{calc} 
+\begin{figure}
+\centering
+\begin{tikzpicture}[rotate around x=-90]
+\draw[->] (0,0,0) -- (1,0,0) node[anchor=west]{x};
+\draw[->] (0,0,0) -- (0,1,0) node[anchor=west]{y};
+\draw[->] (0,0,0) -- (0,0,1) node[anchor=south]{z};
+\coordinate (q) at (.4,.4,3);
+\draw (q)+(-5.5pt,-3pt) node{\includegraphics{Figures/quad}};
+
+\def\a{1.5}
+\def\p{3}
+\draw[->,thick] (q) -- +(\a,\a,-\p) coordinate(l) node[midway,anchor=south west]{$\vec q_i$};
+
+\draw[densely dotted] (q) -- +(0,0,-\p) (q) -- +(\a,0,-\p) (q) -- ++(\a,\a,-\p) coordinate(c) -- ++(0,-\a,0) coordinate(b) -- ++(-\a,0,0) coordinate(a);
+
+\draw[loosely dotted] (q) -- ++(0,\a ,-\p) -- +(0,-\a,0) +(0,0,0) --  +(\a,0,0);
+
+\draw[->] ($(q)!50pt!(a)$) coordinate(pha) to[out=0,in=206.5] ($(q)!50pt!(b)$) coordinate(phb);
+
+\draw[->] ($(q)!70pt!(b)$) coordinate(tha) to[out=26.5,in=220] ($(q)!70pt!(c)$) coordinate(thb);
+
+\draw ($(phb)!.5!(pha)$) node[anchor=north]{$\varphi_i$};
+\draw ($(thb)!.5!(tha)$) node[anchor=north west]{$\vartheta_i$};
+
+
+
+%\draw[green] (q) circle (.5ex);
+\draw (q)+(-17pt,0) node[anchor=east]{$\vec p_i$};
+\end{tikzpicture}
+\caption{Suspension angles schematic}
+\label{fig::angles}
+\end{figure}
+
+\begin{equation}
+	\vec q_i=
+	\begin{bmatrix}
+		\cos(\vartheta_i)\,\sin(\varphi_i)\\
+		\sin(\vartheta_i)\\
+		-\cos(\vartheta_i)\,\cos(\varphi_i)
+	\end{bmatrix}
+	\quad\foralli
+	\label{eq::qi}
+\end{equation}
+
+Deriving \ref{eq::qi} we obtain:
+\begin{equation}
+	\vec{\dot{q}}_i=
+	\begin{bmatrix}
+		-\sin(\vartheta_i)\,\sin(\varphi_i)\\
+		 \cos(\vartheta_i)\\
+		 \sin(\vartheta_i)\,\cos(\varphi_i)
+	\end{bmatrix}\dot\vartheta_i
+	+
+	\begin{bmatrix} 
+		\cos(\vartheta_i)\,\cos(\varphi_i)\\
+		0\\ 
+		\cos(\vartheta_i)\,\sin(\varphi_i) 
+	\end{bmatrix}\dot\varphi_i
+	\quad\foralli
+	\label{eq::dqi}
+\end{equation}
+
+Using this particular representation we can reduce each $\vec q_i$ to $\vartheta_i$ and $\varphi_i$ while also preventing singularities on the working space. In \cref{fig::singularities} we can see that the singularities are on the $\vec q_i$ values of $[0,-1,0]^T$ and $[0,1,0]^T$, which, due to the restrictions that will be imposed in \cref{subsect::linear_ineq}, are impossible to reach.
+
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Figures/th}
+		\caption{$\vartheta_i$ mapping}
+		\label{subfig::theta_map}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Figures/ph}
+		\caption{$\varphi_i$ mapping}
+		\label{subfig::phi_map}
+	\end{subfigure}
+	\caption{Possible values of $\vec q_i$ with color hue mapped to the values of $\vartheta_i$ in (\protect\subref{subfig::theta_map}) and $\varphi_i$ in (\protect\subref{subfig::phi_map})}
+	\label{fig::singularities}
+\end{figure}
+
+\subsection{Reducing $w_i$}
+We can also reduce each $\vec w_i$ to $\dot{\vartheta}_i$ and $\dot{\varphi}_i$.using the following equation which derives from equation \ref{eq::eom1} and the fact that $\vec q_i \cdot \vec w_i =0$:
+
+
+\begin{equation}
+	\vec w_i = \vec q_i \times \dot{\vec q}_i = 
+	\begin{bmatrix} 
+		\cos(\varphi_i)\\ 
+		0\\ 
+		\sin(\varphi_i) 
+	\end{bmatrix}\dot\vartheta_i
+	+
+	\frac{1}{2}
+	\begin{bmatrix} 
+		\sin(2\,\vartheta_i)\,\sin(\varphi_i)\\ 
+		-\cos(2\,\vartheta_i)-1\\ 
+		-\sin(2\,\vartheta_i)\,\cos(\varphi_i) 
+	\end{bmatrix}\dot\varphi_i
+	\quad \foralli
+	\label{eq::wi}
+\end{equation}
+
+These two reductions leave us with the following state vector:
+\begin{equation}
+	\vec{x}=
+	[\vec p_l ,\quad
+	\vartheta_1, \varphi_1, \vartheta_2, \varphi_2 \dots \vartheta_n,\varphi_n ,\quad
+	\vec{\dot{p}}_l ,\quad
+	\dot \vartheta_1,\dot \varphi_1, \dot \vartheta_2,\dot \varphi_2 \dots \dot \vartheta_n,\dot \varphi_n ,\quad
+	\vec{ss}_1, \vec{ss}_2 \dots \vec{ss}_n
+	]
+	\label{eq::state}
+\end{equation}
+
+To use be able to generate the derivatives of the state vector (\ref{eq::state}) using the \ac{EOMs} we need to compute $\vec q_i$ and $\vec w_i$ using equations \ref{eq::qi} and \ref{eq::wi} respectively. We will also need to go from $\dot{\vec w}_i$ to $\ddot\vartheta$ and $\ddot\varphi$. 
+
+In equation \ref{eq::qi} we can see that $\dot\vartheta_i$ is closely related to $\dot{\vec q}_i(2)$ and we can find that:
+\begin{equation}
+%	\dot{\vec q}_i(2)=\cos(\theta_i)\,\dot\theta_i
+%	\rightarrow
+%	\ddot{\vec q}_i(2)=\cos(\theta_i)\,\ddot \theta_i-\sin(\theta_i)\,{\dot \theta_i}^2
+%	\rightarrow
+	\ddot\vartheta_i=\frac{\sin(\vartheta_i)\,{\dot \vartheta_i}^2+\ddot{\vec q}_i(2)}{\cos(\vartheta_i)}
+\quad\foralli
+\end{equation}
+Where $\ddot{\vec q}_i$ can be computed from $\dot{\vec w}_i$ using \ref{eq::eom1}:
+\begin{equation}
+	\ddot{\vec q}_i = \dot{\vec w}_i \times \vec q_i \, + \, \vec w_i \times \dot{\vec q}_i
+\quad\foralli
+\end{equation}
+Similarly, in equation \ref{eq::wi} we can see that $\dot\varphi_i$ is closely related to $\vec w_i(2)$ and we can find that:
+\begin{equation}
+\ddot\varphi_i=\frac{\sin(2\,\vartheta_i)\,\dot \vartheta_i\,\dot \varphi_i-\dot{\vec w}_i(2)}{{\cos(\vartheta_i)}^2}
+\quad\foralli
+\end{equation}
+
+\section{Slack Variables}
+\label{sect::slack}
+Slack variables are added to all inequalities in the MPC Problem. These variables have a very high cost added to them, this guarantees that they will always be zero if there are no problems. The purpose of these variables is to prevent the problem from having no solution and, therefore guaranteeing that the solver will always output something. For our problem we use: \lsymb{$s\in\R_{\ge0}$}{First slack variable} and \lsymb{$s_{env}\in\R$}{Second slack variable}. $s$ can only be positive, while $s_{env}$ can be any value, and they are used in different constraints (see section \ref{sect::constraints}). The vector concatenating both variables is denoted by \others{$\vec{s}\in\R^2$}{Slack variables}
+
+\section{Forces PRO formulation}
+Forces PRO uses the $\vec z$\hiddenlsymb{$\vec z\in\R^{3n+2+n_{var}}$}{asd} vector to represent stages. This vector is the concatenation of the $\vec{u}$, $\vec{s}$ and $\vec{x}$ vectors and has size $3n+2+n_{var}$.
+
+\section{Constraints}
+Constraints are very useful, we can use them to prevent the predicted system from behaving in ways that would be impossible for the real system. They also have low effect on the total time of the solver as, while they increase the time of each iteration, they also reduce the search space, reducing the number of iterations needed to find the optimal solution.
+
+ 
+\label{sect::constraints}
+\subsection{State Variables Restrictions}
+\label{subsect::linear_ineq}
+Some variables in the $\vec z$ vector are restricted by inequalities, in \cref{eq::linear_ineq} we can see all of these inequalities.
+
+\begin{equation}
+\begin{array}{r @{{}\le{}} c @{{}\le{}} l @{\qquad} l}
+-15\degree & \bar \theta_i & 15\degree & \foralli\\
+-15\degree & \bar \phi_i   & 15\degree & \foralli\\
+\SI{-2}{\meter\per\second} & \bar{\dot z}_i & \SI{2}{\meter\per\second} & \foralli\\
+0    & s        & \infty \\
+-\infty & s_{env} & \infty \\
+-60\degree & \vartheta_i & 60\degree & \foralli\\
+-60\degree & \varphi_i   & 60\degree & \foralli\\
+\end{array}
+\label{eq::linear_ineq}
+\end{equation}
+
+%\subsection{Nonlinear inequalities}
+%Nonlinear inequalities are applied to nonlinear functions. In Forces PRO these functions can depend on the $\vec z$ vector and a parameter vector that can be different on each stage. This vector will not be explained in detail, but is used to pass variables such as the predicted position of the obstacles, $\hat{\vec p}_{obs_i}$.
+
+\subsection{Environment Constraints}
+The drones and the payload must stay inside the environment. As the inequalities needed for this are bounded from both sides, we use $s_{env}$, as it can also be negative.
+
+\begin{equation}
+\begin{array}{r @{{}\le{}} c @{{}\le{}} l @{\qquad} l}
+
+\begin{bmatrix}
+-\frac{\vec{dim}(1)}{2}\\
+-\frac{\vec{dim}(2)}{2}\\
+0
+\end{bmatrix}
+&
+\vec p_l + s_{env} 
+&
+\begin{bmatrix}
+\frac{\vec{dim}(1)}{2}\\
+\frac{\vec{dim}(2)}{2}\\
+\vec{dim}(3)
+\end{bmatrix} \\[30pt]
+\begin{bmatrix}
+-\frac{\vec{dim}(1)}{2}\\
+-\frac{\vec{dim}(2)}{2}\\
+0
+\end{bmatrix}
+&
+\vec p_i + s_{env} 
+&
+\begin{bmatrix}
+\frac{\vec{dim}(1)}{2}\\
+\frac{\vec{dim}(2)}{2}\\
+\vec{dim}(3) 
+\end{bmatrix} & \foralli \\
+\end{array}
+\end{equation}
+
+\subsection{Wire Slackening Prevention}
+Our model does not take into account that the wire can be deformed or folded, instead, it is modeled as a solid beam. In early testing, it became apparent that the system was occasionally using the beams in order to push the payload, something impossible with wires. To prevent this from happening we need to add a constraint.
+
+ According to the literature\cite{Pounds2012}, a wire goes from taunt to slack when the wire's tension becomes negative. Therefore we must prevent the wire from having a negative tension. To ensure this we find the force exerted by the \ac{EOMs} on each drone (denoted as \lsymb{$\vec T_i\in\R^3$}{Tension exerted on the $i$-th drone}) and add an extra inequality:
+\begin{align}
+ \vec T_i &= m_i\ddot{\vec p}_i - g\vec e_3 -\vec F_{uDi} \quad\foralli\\ 
+0 &\le \vec q_i^T \vec T_i + s \quad\foralli	
+\end{align}
+\subsection{Drone Speed Limit}
+We need to limit the drone speed to keep the movement safe. To do that we limit the drone speed:
+\begin{equation}
+\|\dot{\vec p}_i\|\le \SI{2}{\meter\per\second}\quad\foralli
+\end{equation}
+\subsection{Drone Distance}
+We need to keep a minimum distance between drones so that they don't crash into each other:
+\begin{equation}
+\|\vec p_i - \vec p_j\|\ge \SI{0.4}{\meter}\quad\foralli\forallj
+\end{equation}
+\subsection{Collision Avoidance}
+As explained in \cref{subsect::obstacle_modeling} (\nameref{subsect::obstacle_modeling}), the obstacles are modeled as a box. However, for collision avoidance, we will use the smallest volume ellipsoid that contains it. We do this because it is important for the equations of the \ac{MPC} to be as continuous as possible so that the solver converges on a solution faster.
+
+Calculating distances from a point to an ellipsoid can be difficult, as seen in \cite{MAISONOBE2006}. However, we can use the approximation in equation 2-24 (given a point $[x,y,z]$ and an ellipsoid with center $[x_c,y_c,z_c]$ and sizes $a,b,c$). This approximation is good if you only want to check its sign.
+
+\begin{equation}
+d = 
+\left(\frac{x-x_c}{a}\right)^2+
+\left(\frac{y-y_c}{b}\right)^2+
+\left(\frac{z-z_c}{c}\right)^2-1
+\end{equation}
+
+To calculate this approximated distance for the whole system, we find the distance between each of the wires and the expected position of the ellipsoid (assuming it follows linear movement) and find the minimum value. We also need to add some extra space to the ellipse to prevent a collision when the drones do not follow exactly the model.
+
+To do this we need a way to calculate the distance between an ellipsoid and a segment. We use the same equation described in the Appendix C of \cite{Potdar2018}.
+
+\section{Objective function}
+
+The objective function consists of different objectives, each with their separate cost which are all added together using different weights. We will denote costs and their respective weights as \lsymb{$C_x$}{Cost of objective x} and \lsymb{$W_x$}{Weight of objective x}. Each cost is calculated for all stages of the prediction and added together, which is why a lot of the weights depend on the number of stages.
+
+The objective function is really difficult to design, you can add a lot of different objectives to it and make the controller more complex and more intelligent. 
+
+However, as you increase the complexity of the objective function is, the \ac{MPC} solver has more trouble finding its optimal value. It is also recommendable to keep the function as smooth as possible, preferably with a continuous derivative, as the \ac{MPC} solver relies on the derivatives to find the minimum.
+
+This is why we will first introduce the most basic costs and more could be added if we had extra computational power.
+
+\subsection{Destination Objective}
+
+\begin{align}
+C_{dest} & =
+\sum_{i=0}^{n}\left(
+(\vec p_i-\bar{\vec p}_i)^T
+\begin{bmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1.1
+\end{bmatrix}
+(\vec p_i-\bar{\vec p}_i)\right)
+\\
+W_{dest} & = 
+\begin{cases}
+	5 & \text{if stage is final}
+    \\ 0 & \text{otherwise}
+\end{cases}
+\end{align}
+
+\subsubsection{Justification:}
+The whole objective of the system is to go from one point to another. This is accomplished thanks to this objective.
+
+Initially, we used the distance from the payload to the destination as an objective function, however, this poses a problem. The solver uses the inputs to minimize total cost, therefore it is best if the objective function is as closely related as possible to the inputs. This does not happen if we use the payload position, as the input force is applied to the drones, and then they pull from the payload.
+
+Therefore we ended up using the distance between the drones and the desired position of the drones, which is computed from the desired position of the payload and desired suspension angles (using equations \ref{eq::pi} and \ref{eq::qi}).
+
+In order to prevent discouraging the system from performing complex movements, such as moving away from the destination in order to dodge an obstacle, we will only optimize this objective for the final stage.
+
+In order to get a simpler derivative of this cost term, we do not calculate the distance but the squared distance.
+
+We also weight the $z$ coordinate of the distance slightly higher than the $x$ and $y$ coordinates so that the system tries to stay in the same horizontal plane as the objective if possible.
+
+\subsection{Final Speed Minimization}
+\begin{align}
+C_{speed} & = \sum_{i=0}^{n}\left(
+\vec{\dot p}_i^T
+\vec{\dot p}_i
+\right)
+\\
+W_{speed} & = 
+\begin{cases}
+10^{-2} & \text{if stage is final}
+\\ 0 & \text{otherwise}
+\end{cases}
+\end{align}
+\subsubsection{Justification:}
+When the system can already reach the objective within the time-horizon, it is best to make sure that the final stage has also minimal velocity. This is not completely necessary, as we only use the first stages for drone input, however it makes the plan be more realistic. 
+
+While using this cost across all stages would help stabilize the system, it is best not to do so as it is a really complex equation (we need to use \cref{eq::dqi} and the derivative of \cref{eq::pi}).
+
+The weight is set very low to prevent this cost from discouraging movement.
+
+It was also found that adding this cost increased convergence when the system is near the objective, as the last planner solution is more similar to the optimal plan.
+
+
+
+\subsection{Input Minimization}
+\begin{align}
+C_{input} &=
+\sum_{i=0}^{n}\left(
+\vec u_i^T
+\vec u_i \right)\\
+W_{input} &=
+\frac{10^{-2}}{N}
+\end{align}
+
+\subsubsection{Justification:}
+The aim of this cost is to prevent the system from doing unnecessary movements, especially when it has already reached the destination. This helps stabilization and is really simple to calculate.
+
+In order to prevent this cost from discouraging system movement, its weight is low compared to the other ones.
+
+
+\subsection{Slack Minimization}
+\begin{align}
+C_{slack} &=
+\vec{s}^T
+\vec{s} \\
+W_{slack} &=
+\frac{10^{5}}{N}
+\end{align}
+
+\subsubsection{Justification:}
+As explained in \cref{sect::slack} slack variables  should always be zero and this is accomplished by this cost. The weight of this should be really high, as slack variables only have to be used if it is impossible to find any other solution.

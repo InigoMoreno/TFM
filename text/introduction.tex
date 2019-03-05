@@ -1,0 +1,62 @@
+%
+% Introduction
+\chapter{Introduction} \label{chap::intro}
+
+\section{Theme Relevance and Justification}
+
+\subsection{Omni-wheeled robots}
+
+\subsection{Model Predictive Control}
+
+\section{Research Objective}
+The objective of the research included in this thesis is to:
+
+\begin{quote}
+	\emph{
+		Design a control algorithm for systems with an omni-wheeled robot and demonstrate it in simulated and real scenarios.
+	}
+\end{quote}
+
+\section{Thesis Context}
+
+This thesis is a result of the collaboration between \ac{FME} and \ac{IRI}. During the summer of 2018 I contacted \mscsupervisorone looking for a suitable project for my Master's Thesis and he proposed me this one.
+
+\section{Notation}
+
+Throughout this thesis the following notation will be used:
+
+\setlength\arrayrulewidth{1.2pt}
+\let\oldarraystretch\arraystretch
+\renewcommand{\arraystretch}{1.2}
+%\rowcolors{2}{gray!10}{white}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ l | c | c }
+	& Symbol & Definition \\\hline
+	Scalars: & $x$ & \\ 
+	Vectors: & $\vec{x}$ & \\  
+	Elements of vector: & $\vec{x}(i)$ & $i$-th element of vector $\vec x$\\ 
+	Position vectors: & $\vec p_x$ & \\
+	Coordinates of position vector: &$x_x, y_x, z_x$&x,y,z coordinates of position $\vec p_x$\\
+	Matrices: & $\vec{X}$ & \\
+	Sets: & $\mathcal{X}$ & \\
+	%Set of unit vectors: & $\mathcal{S}^{n-1}$ & $\{\vec{x}\in \R^n | \ \|\vec{x}\|=1\}$ \\
+	Time derivatives: & $\dot{x}$ & $\frac{\partial x}{\partial t}$ \\
+	Desired values: & $\bar{x} $&  desired value of $x$ \\
+	Predicted values: & $\hat{x} $&  predicted value of $x$ 
+	%Set of positive semidefinite matrices of size $n$: & $\mathcal{S}^n_+$ & $\{\vec{A\in\R^{n\times n}}| \ \vec{x}^T\vec{Ax}>0 \ \forall \ x\in \R_{\ne 0}^n\}$\\ 
+	%Weighted squared norm: & $\|\vec{x}\|_{\vec{Q}}$ & $\vec{x}^T\vec{Qx} \ \forall \  \vec{x}\in\R^n ,\ \vec{Q}\in \mathcal{S}^n_+ $ \\
+%	Hat map: & $\hat{x}$ & $\hat{x} y=x\times y \ \forall \ x,y\in\R^3$
+	\label{tab:Notation}
+\end{tabular}
+\caption{Thesis Notation}
+\end{center}
+\end{table}
+All vectors are column vectors and all positions are expressed in the \ac{ENU} inertial frame unless otherwise stated.
+
+
+
+
+\let\arraystretch\oldarraystretch
+
+

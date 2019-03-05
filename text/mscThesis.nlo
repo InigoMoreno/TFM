@@ -1,0 +1,15 @@
+\nomenclatureentry{c $\vec p_0\in \R ^2$@[{$\vec p_0\in \R ^2$}]\begingroup \MakeUppercase Location of the robot's center point\nomeqref {2-0}|nompageref}{3}
+\nomenclatureentry{b $\psi \in \R $@[{$\psi \in \R $}]\begingroup \MakeUppercase Roll of the robot\nomeqref {2-0}|nompageref}{3}
+\nomenclatureentry{c $n\in \Z _{> 0}$@[{$n\in \Z _{> 0}$}]\begingroup \MakeUppercase Number of wheels\nomeqref {2-0}|nompageref}{3}
+\nomenclatureentry{c $u_i\in [-1,1]$@[{$u_i\in [-1,1]$}]\begingroup \MakeUppercase i-th motor input\nomeqref {2-0}|nompageref}{4}
+\nomenclatureentry{b $theta_i\in \R $@[{$theta_i\in \R $}]\begingroup \MakeUppercase i-th wheel angle\nomeqref {2-0}|nompageref}{4}
+\nomenclatureentry{c $\vec F_{Dl}\in \R ^3$@[{$\vec F_{Dl}\in \R ^3$}]\begingroup \MakeUppercase Aerodynamic drag on the payload\nomeqref {2-3}|nompageref}{5}
+\nomenclatureentry{c $\vec F_{Di}\in \R ^3$@[{$\vec F_{Di}\in \R ^3$}]\begingroup \MakeUppercase Aerodynamic drag on the $i$-th drone\nomeqref {2-3}|nompageref}{5}
+\nomenclatureentry{c $k_{Dl}\in \R $@[{$k_{Dl}\in \R $}]\begingroup \MakeUppercase Drag constant of the payload\nomeqref {2-5}|nompageref}{5}
+\nomenclatureentry{c $k_{Di}\in \R $@[{$k_{Di}\in \R $}]\begingroup \MakeUppercase Drag constant of the $i$-th quadrotor\nomeqref {2-5}|nompageref}{5}
+\nomenclatureentry{c $\vec F_{uDi}$@[{$\vec F_{uDi}$}]\begingroup \MakeUppercase addition of $\vec F_{ui}$ and $\vec F_{Di}$\nomeqref {2-5}|nompageref}{5}
+\nomenclatureentry{c $\vec {dim}\in \R ^3_{>0}$@[{$\vec {dim}\in \R ^3_{>0}$}]\begingroup \MakeUppercase Environment dimensions\nomeqref {2-8}|nompageref}{6}
+\nomenclatureentry{c $n_{obs}\in \Z _{\ge 0}$@[{$n_{obs}\in \Z _{\ge 0}$}]\begingroup \MakeUppercase Number of obstacles\nomeqref {2-8}|nompageref}{6}
+\nomenclatureentry{c $\vec {p}_{obs_i}\in \R ^3$@[{$\vec {p}_{obs_i}\in \R ^3$}]\begingroup \MakeUppercase Position of the $i$-th obstacle\nomeqref {2-8}|nompageref}{6}
+\nomenclatureentry{c $\vec {dim}_{obs_i}\in \R ^3_{>0}$@[{$\vec {dim}_{obs_i}\in \R ^3_{>0}$}]\begingroup \MakeUppercase Dimension of the $i$-th obstacle\nomeqref {2-8}|nompageref}{6}
+\nomenclatureentry{c $\vec {dim}_{ell_i}\in \R ^3$@[{$\vec {dim}_{ell_i}\in \R ^3$}]\begingroup \MakeUppercase Ellipsoid dimensions of the $i$-th obstacle\nomeqref {2-8}|nompageref}{6}

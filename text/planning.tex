@@ -1,0 +1,121 @@
+\chapter{Project Planning}
+
+\section{Planning and Scheduling}
+
+The thesis started on \formatdate{1}{2}{2018} and will end on \formatdate{17}{6}{2018}, the week before the presentations start. This gives us an approximate project duration of 5 months.
+
+The research is done in the laboratory at \ac{CoR} and an average of 40 hours a week are dedicated to the project.
+
+Every two weeks, a meeting is scheduled with prof. Javier Alonso-Mora to demonstrate the work done and discuss the development of the project. The \ac{CoR} Department also has a monthly meeting where the projects of all students in \ac{CoR} are demonstrated and discussed.
+
+This scheduling is not strictly enforced and will change depending on the availability of both the professor and me.
+
+\section{Task Description}
+
+\subsection{Paper reading}
+Even before the project started, I began reading papers related to the thesis. Some were recommended by prof. Javier Alonso-Mora, such as the Master Thesis my project was going to be based on, by Nikhil D. Potdar \cite{Potdar2018}. I also read previous work by Alonso-Mora \cite{Alonso-Mora2017,Alonso-mora} and some related work such as Taeyoung Lee's work in \cite{Lee2013,Lee2014}
+
+This reading had a duration of about two weeks and helped me better understand the work ahead of me and familiarize myself with how the problem could be solved.
+
+\subsection{Installing and familiarizing myself with \ac{ROS}}
+The next step was to install \ac{ROS} and understand how it worked. I chose to install \ac{ROS} Kinetic, as this was the version of \ac{ROS} used in the laboratory. This meant I had to do a fresh installation of \code{Ubuntu 16.04} as \ac{ROS} Kinetic only supports Wily (\code{Ubuntu 15.10}), Xenial (\code{Ubuntu 16.04}) and Jessie (\code{Debian 8}). To install \ac{ROS} I followed the instructions at \url{http://wiki.ros.org/kinetic/Installation/Ubuntu}.
+
+To better understand \ac{ROS} I followed the official tutorials available at \url{http://wiki.ros.org/ROS/Tutorials}. I followed these tutorials until the intermediate level and tested my connection through the laboratory's Ethernet network.
+
+I also Installed the ROS Drivers for the Drone which are available at \url{http://bebop-autonomy.readthedocs.io/en/latest/#} and the node for communication with the \ac{MCS}, which is available at \url{http://wiki.ros.org/mocap_optitrack}. I also tested communication with the drones and with the \ac{MCS}.
+
+Finally, I installed \code{MATLAB} (version \code{R2017b}) and the \code{Robotics System Toolbox (version 1.4)} to communicate with \code{MATLAB} with the \ac{ROS} Network. I also did some tests to familiarize myself with the toolbox.
+
+This process took about a week and a half, as I ran into problems with my \code{Ubuntu} installation and had to repeat the whole process several times.
+
+\subsection{Understanding Nikhil D. Potdar's Code}
+Nikhil D. Potdar's Thesis was in control of a single drone carrying a payload, and therefore, his code could be very useful for my research. This is why I dedicated some time to read through his code and understand every decision made in the code by reading his thesis \cite{Potdar2018} in a lot of detail. To get used to the code and better understand it I implemented some additional features on his code, such as inter-drone collision avoidance when multiple drones are carrying payloads. This process took two weeks.
+
+\subsection{Finding an accurate dynamic model}
+The next step was to find an accurate dynamic model for the multiple drone system. My first approach was to use something similar to what Nikhil D. Potdar used in his thesis, which consisted on defining the state using \code{MATLAB}'s symbolic toolbox and, calculating the Lagrangian $L$ of the system, and solving Lagrange's equation:
+\begin{equation*}
+\frac{d}{dt}
+\left(
+\frac{\partial L}{\partial \dot{\vec q}}
+\right) - 
+\frac{\partial L}{\partial \vec q}
+= 0
+\end{equation*}
+
+However, as the multi-drone system was far more complex than the single-drone system, these equations were much more complex, this resulted in extremely long equations that were very badly optimized. I then tried to use Wolfram Mathematica's \code{FullSimplify} to simplify the equations, but they were so big that not even Mathematica could simplify them.
+
+Finally, I used a different approach, I used the dynamic model introduced by Taeyoung Lee in \cite{Lee2013} and later simplified it for better performance. This task took approximately three weeks.
+
+\subsection{Transforming Nikhil D. Potdar's Code for the multiple drone case}
+
+The next step was to transform Nikhil D. Potdar's Code for the multiple drone case. The code had to be almost entirely rewritten, as a lot of parameters have to be added, the state vector and therefore, most of the functions have to be adapted to work with a variable amount of drones. The process is also very time consuming as the code uses a \ac{MPC} problem solver called FORCES PRO. This solver has to be generated every time a change is made in the \ac{MPC} problem and, as the equations are much more complex, FORCES PRO takes a really long time to generate a new solver.
+
+The total time invested in this task was about two weeks.
+
+\subsection{Adding constraints and tweaking cost function}
+The \ac{MPC} problem has a lot of constraints and parameters that need to be tweaked and adjusted throughout the project. This task has been done in one week, but it continued throughout the project as new constraints came to my mind.
+
+\subsection{Optimizing the code for real-time performance}
+After transforming the code and running it in simulation, it became apparent that some optimization was required. Several methods  were applied, that will be explained further in the final thesis. This process is still ongoing at the time this report was written and its expected duration is of three weeks.
+
+\subsection{Writing the thesis}
+The thesis was written in parallel to many of the other tasks described previously, and will continue until the end of the project.
+
+\subsection{Testing the planner in different scenarios}
+When I am pleased with the results and speed of the planner, I will proceed to test it in different simulated scenarios. If I get a good enough planner speed in these scenarios, I will proceed to test it with real drones and document the results.
+
+The expected duration of this process is of two weeks.
+
+\section{Gantt chart}
+
+
+\begin{figure}[H]
+	\centering{}
+	\def\gantttext{4cm}
+	\begin{ganttchart}[
+		time slot format=isodate,
+		x unit = .85mm,
+		y unit title = .7cm,
+		y unit chart = .4cm,
+		group label font = \tiny\bf,
+		title label font = \tiny,
+		bar label font = \tiny,
+		vgrid={*{3}{draw=none},dotted,*{3}{draw=none}},
+		today={\the\year-\the\month-\the\day},
+		hgrid,
+		calendar week text = {\currentweek},
+		link bulge = 2,
+		]{2018-02-1}{2018-06-29}
+		\gantttitlecalendar{month=name, week} \\
+		\node (a) [anchor=north east] at (current bounding box.north west){\tiny\textit{Month:}};
+		\node (b) [anchor=south west] at (current bounding box.south west){\tiny\textit{Week:}};
+		
+		% Start gantt itself
+		\ganttgroup{Preamble}{2018-02-01}{2018-03-11} \\
+		\ganttbar{Paper reading}{2018-02-1}{2018-02-14} \\
+		\ganttbar{ROS installation}{2018-02-15}{2018-02-25} \\
+		\ganttlinkedbar{Understand code}{2018-02-26}{2018-03-11} \\
+		
+		
+		\ganttgroup{Code development}{2018-03-12}{2018-05-13}\\
+		\ganttlink{elem0}{elem4}
+		\ganttbar{Dynamic model}{2018-03-12}{2018-04-1} \\
+		\ganttlinkedbar{Transforming code}{2018-04-2}{2018-04-15} \\
+		\ganttlinkedbar{Adding constraints}{2018-04-16}{2018-04-22} \\
+		\ganttlinkedbar{Optimizing}{2018-04-23}{2018-05-13} \\
+		
+		\ganttgroup{Testing}{2018-05-28}{2018-05-41} \\
+		\ganttlink{elem4}{elem9}
+		\ganttbar{Testing}{2018-05-28}{2018-05-34} \\
+		\ganttlinkedbar{Extract conclusions}{2018-05-35}{2018-05-41} \\
+		
+		\ganttgroup{Final Stage}{2018-04-16}{2018-06-29} \\
+		\ganttbar{Write GEP report}{2018-05-14}{2018-05-27} \\
+		\ganttbar{Write Thesis}{2018-04-16}{2018-05-13}
+		\ganttbar{}{2018-05-28}{2018-06-17}\\
+		\ganttbar{End project}{2018-06-18}{2018-06-24} \\
+		\ganttbar{Presentation}{2018-06-25}{2018-06-29} \\
+		
+	\end{ganttchart}
+	\caption{Gantt chart of the project \label{fig:gantt}}
+\end{figure}

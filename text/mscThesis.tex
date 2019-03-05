@@ -1,0 +1,239 @@
+\documentclass[nosignatures]{mscThesis}
+
+
+\usepackage[table]{xcolor}
+\RequirePackage{siunitx}
+\RequirePackage[T1]{fontenc}                        % T1 font encoding for PDFs
+\RequirePackage{lmodern}                                % extended font definition
+\RequirePackage{amsmath,amssymb,amsthm} % most important math stuff
+\RequirePackage{a4wide}                                 % make better use of A4 paper
+\RequirePackage{fancyhdr}                               % custom headers and footers
+\RequirePackage{fncychap}                               % custom chapter titles
+\RequirePackage{graphicx}                               % graphics
+\RequirePackage{color}                                  % color
+\RequirePackage{booktabs}                               % extra tabular commands
+\RequirePackage[format=plain]{caption}  % improved caption format
+\RequirePackage{nomencl}                                % cool nomenclature listing
+\RequirePackage{makeidx}                                % create your index
+\RequirePackage[printonlyused]{acronym}
+\RequirePackage{ifthen}                                 % if-then commands (used in maketitle)
+\RequirePackage{eso-pic}                                % picture in back/forground (used in cover)
+\RequirePackage{relsize}                                % \textlarger, \textsmaller etc
+%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  Set up Matlab and C++ Listings
+%%  REQUIRES PACKAGE listings AND colortbl
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%
+\RequirePackage{listings}%
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{pgf,tikz}
+
+\usepackage{pgfgantt}
+
+\usepackage{mathrsfs}
+
+\usepackage{mathtools}
+
+\usepackage{gensymb}
+
+\usepackage{float}
+
+\usepackage{needspace}
+
+\usepackage{pgfplots}
+
+\usepackage[nodayofweek,level]{datetime}
+
+\usepackage{todonotes}
+
+\usepackage{bm}
+
+\usepackage{enumitem}
+
+\usepackage{graphicx}
+
+\usepackage{subcaption}
+
+\usepackage{indentfirst}
+
+\usepackage{multirow}
+
+\usepackage{eurosym}
+
+\usepackage{hhline}
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\usetikzlibrary{arrows}
+
+\setlength{\parindent}{15pt}
+
+\pgfplotsset{compat=newest}
+%prevent sections from starting if there is not enough space
+\let\oldsection\section
+\renewcommand\section{\Needspace{10\baselineskip}\oldsection}
+\let\oldsubsection\subsection
+\renewcommand\subsection{\Needspace{10\baselineskip}\oldsubsection}
+
+\DeclareMathOperator*{\argmin}{argmin}   % Jan Hlavacek
+
+\creflabelformat{equation}{#2#1#3}
+
+\newtagform{noparen}{}{}
+\usetagform{noparen}
+
+
+\DeclareSIUnit{\EURO}{\text\euro}
+\captionsetup{justification=centering}
+
+%\hypersetup{colorlinks=false}
+\newcommand{\code}[1]{\texttt{#1}}
+
+
+
+%this makes it possible to include latex inside SI
+\sisetup{parse-numbers = false, number-math-rm = \ensuremath, per-mode=symbol}
+\usetikzlibrary{quotes,arrows.meta}
+\tikzset{
+	annotated cuboid/.pic={
+		\tikzset{%
+			every edge quotes/.append style={midway, auto},
+			/cuboid/.cd,
+			#1
+		}
+		\draw [every edge/.append style={pic actions, densely dashed, opacity=.5}, pic actions]
+		(0,0,0) coordinate (o) -- ++(-\cubescale*\cubex,0,0) coordinate (a) -- ++(0,-\cubescale*\cubey,0) coordinate (b) edge coordinate [pos=1] (g) ++(0,0,-\cubescale*\cubez)  -- ++(\cubescale*\cubex,0,0) coordinate (c) -- cycle
+		(o) -- ++(0,0,-\cubescale*\cubez) coordinate (d) -- ++(0,-\cubescale*\cubey,0) coordinate (e) edge (g) -- (c) -- cycle
+		(o) -- (a) -- ++(0,0,-\cubescale*\cubez) coordinate (f) edge (g) -- (d) -- cycle;
+		\path [every edge/.append style={pic actions, |-|}]
+		(b) +(0,-5pt) coordinate (b1) edge ["$\vec{dim}(1)$"'] (b1 -| c)
+		(b) +(-5pt,0) coordinate (b2) edge ["$\vec{dim}(3)$"] (b2 |- a)
+		(c) +(3.5pt,-3.5pt) coordinate (c2) edge ["$\vec{dim}(2)$"'] ([xshift=3.5pt,yshift=-3.5pt]e)
+		; \path (b)++(\cubescale*\cubex/2,0,0)++(0,0,-\cubescale*\cubez/2) coordinate(x);
+		\draw[->] (x)--++(\cubescale*\cubex/5,0,0) node[anchor=west]{$x$};
+		\draw[->] (x)--++(0,\cubescale*\cubex/5,0) node[anchor=south]{$z$};
+		\draw[->] (x)--++(0,0,-\cubescale*\cubex/5) node[anchor=west]{$y$};
+	},
+	/cuboid/.search also={/tikz},
+	/cuboid/.cd,
+	width/.store in=\cubex,
+	height/.store in=\cubey,
+	depth/.store in=\cubez,
+	units/.store in=\cubeunits,
+	scale/.store in=\cubescale,
+	width=10,
+	height=10,
+	depth=10,
+	units=cm,
+	scale=.1,
+}
+
+%redefine vector and Real symbols for faster typing
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\foralli}[1][]{\forall i \in \{1\dots n_{#1}\}}
+\newcommand{\forallj}[1][]{\forall j \in \{1\dots n_{#1}\}}
+\newcommand{\forallk}[1][]{\forall k \in \{1\dots n_{#1}\}}
+%\renewcommand{\dot}{\frac{\partial }{\partial t}}
+%\renewcommand{\ddot}{\frac{\partial ^2}{\partial t^2}}
+
+
+%set spacing between rows in tables
+\renewcommand{\arraystretch}{1.2}
+
+
+\mscDepartment{Delft Center for Systems and Control (\textsmaller{DCSC})}%
+\mscProgram{Systems and Control}
+%Change if needed to
+%\mscProgram{Mechanical Engineering}
+\mscFaculty{Mechanical, Maritime and Materials Engineering (3mE)}%
+%
+%-name, date, title
+\mscName{Iñigo Moreno Caireta}%
+\mscDate{\today}%
+\mscTitle{Planng and Control of a Multiple-Quadcopter System Cooperatively Carrying a Slung Payload in Dynamical Environments}%
+\mscSubTitle{A Centralized Model Predictive Control Solution}%
+\mscKeyWords{thesis, msc, subject}% only used in PDF properties
+%
+%-cover picture
+\mscCoverPicture{STYLESTUFF/COVER}% to place a picture ( here the example COVER.eps) on the cover page. Comment out if no picture is to be used
+%
+%
+%-Third party options (create text/logo on the copywrite page)
+\mscThirdPartyText{}
+\mscThirdPartyLogo{}
+%
+%	
+% The examination committee  - Supervisors and Readers
+\mscSupervisorOne{Lluis Ros}
+\mscSupervisorTwo{Mercè Ollé}
+%\mscSupervisorThree{}
+%\mscReaderFour{}
+%
+% Finalize the thesis data
+\setThesisInfo
+%
+% Use \includeonly{} to build only certain parts of your thesis
+%\includeonly{introduction, real_chapter, empty_chapter, long_chapter}%
+%
+% allow (matlab, C++ etc) listing max 1pt flexibility between lines
+\lstset{lineskip=0pt plus 1pt minus 0pt} %%
+%
+\begin{document}
+%
+%========================== Front matter ======================================
+\frontmatter %
+%
+% Make the cover page and hell of a lot of title pages
+\maketitle
+%
+\include{abstract}
+
+% table of contents, (\toc of \toclof of \tocloflot )
+\setcounter{tocdepth}{2}
+%\tocloflot
+\toclof
+%
+%
+%\include{preface}
+%\include{acknowledgements}
+%\include{dedication}
+%
+%========================== Main matter ======================================
+\mainmatter
+%
+\include{introduction}
+\include{problem}
+%\include{mpc}
+%\include{setup}
+%\include{results}
+%\include{conclusion}
+%
+%
+%========================== Appendices =======================================
+\appendix
+
+%\include{planning}
+%\include{sustainability}
+%\include{some chapter}
+
+%========================== Back matter ======================================
+\backmatter
+%
+% Bibliography
+\bibliographystyle{ieeetr}
+\bibliography{MyBib}
+%
+\include{glossary}
+%
+% Index
+
+\end{document}

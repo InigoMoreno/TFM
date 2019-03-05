@@ -1,0 +1,52 @@
+\begin{thebibliography}{10}
+
+\bibitem{Darack2017}
+E.~Darack, ``{A Brief History of Quadrotors},'' {\em Air{\&}Space
+  (Smithsonian)}, 2017.
+
+\bibitem{Pounds2012}
+P.~E. Pounds, D.~R. Bersak, and A.~M. Dollar, ``{Stability of small-scale UAV
+  helicopters and quadrotors with added payload mass under PID control},'' {\em
+  Autonomous Robots}, vol.~33, no.~1-2, pp.~129--142, 2012.
+
+\bibitem{Alonso-Mora2017}
+J.~Alonso-Mora, S.~Baker, and D.~Rus, ``{Multi-robot formation control and
+  object transport in dynamic environments via constrained optimization},''
+  {\em International Journal of Robotics Research}, vol.~36, no.~9,
+  pp.~1000--1021, 2017.
+
+\bibitem{Lee2013}
+T.~Lee, K.~Sreenath, and V.~Kumar, ``{Geometric control of cooperating multiple
+  quadrotor uavs with a suspended payload},'' {\em Proceedings of the IEEE
+  Conference on Decision and Control}, pp.~5510--5515, 2013.
+
+\bibitem{Wu2014}
+G.~Wu and K.~Sreenath, ``{Geometric control of multiple quadrotors transporting
+  a rigid-body load},'' {\em Proceedings of the IEEE Conference on Decision and
+  Control}, vol.~2015-Febru, no.~February, pp.~6141--6148, 2014.
+
+\bibitem{Potdar2018}
+N.~D. Potdar, {\em {Online Trajectory Planning and Control of a MAV Payload
+  System in Dynamic Environments}}.
+\newblock Master's thesis, TU Delft, 2018.
+
+\bibitem{MAISONOBE2006}
+L.~MAISONOBE, ``{Quick computation of the distance between a point and an
+  ellipse},'' no.~September 2003, pp.~1--14, 2006.
+
+\bibitem{Bisgaard2009}
+M.~Bisgaard, J.~D. Bendtsen, and A.~L. Cour-Harbo, ``{Modeling of Generic Slung
+  Load System},'' {\em Journal of Guidance, Control, and Dynamics}, vol.~32,
+  no.~2, pp.~573--585, 2009.
+
+\bibitem{Lee2014}
+T.~Lee, ``{Geometric Control of Quadrotor UAVs Transporting a Cable-Suspended
+  Rigid Body},'' {\em IEEE Transactions on Control Systems Technology},
+  vol.~26, no.~1, pp.~255--264, 2018.
+
+\bibitem{Alonso-mora}
+J.~Alonso-mora, E.~Montijano, T.~Naegeli, O.~Hilliges, and D.~Rus,
+  ``{Distributed Multi-robot Formation Control in Dynamic Environments},'' {\em
+  Autonomous Robots}, 2018.
+
+\end{thebibliography}
