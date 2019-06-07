@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.2.11)  11 FEB 2019 16:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.2.11)  8 APR 2019 13:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1690,6 +1690,13 @@ Package cleveref Info: include cross-reference names in hyperlinks on input lin
 e 7493.
 Package cleveref Info: no abbreviation of names on input line 7493.
 )
+(/usr/share/texlive/texmf-dist/tex/latex/was/upgreek.sty
+Package: upgreek 2003/02/12 v2.0 (WaS)
+Package upgreek Info: Using Euler Roman for upright Greek on input line 31.
+\symugrf@m=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `ugrf@m' in version `bold'
+(Font)                  U/eur/m/n --> U/eur/b/n on input line 38.
+)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibraryquotes.code.tex
 File: tikzlibraryquotes.code.tex 2014/03/21 v3.0.1a (rcs-revision 1.4)
@@ -1715,21 +1722,21 @@ Writing index file mscThesis.idx
 (./glossary.aux))
 \openout1 = `mscThesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 190.
-LaTeX Font Info:    ... okay on input line 190.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 190.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 194.
  (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1768,7 +1775,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box71
 \c@lstlisting=\count322
-Package hyperref Info: Link coloring ON on input line 190.
+Package hyperref Info: Link coloring ON on input line 194.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1778,9 +1785,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count323
 )
-LaTeX Info: Redefining \ref on input line 190.
-LaTeX Info: Redefining \pageref on input line 190.
-LaTeX Info: Redefining \nameref on input line 190.
+LaTeX Info: Redefining \ref on input line 194.
+LaTeX Info: Redefining \pageref on input line 194.
+LaTeX Info: Redefining \nameref on input line 194.
 
 (./mscThesis.out) (./mscThesis.out)
 \@outlinefile=\write7
@@ -1873,15 +1880,15 @@ Dictionary: translator-months-dictionary, Language: English
 File: siunitx-abbreviations.cfg 2016/03/01 v2.6q siunitx: Abbreviated units
 )
 ABD: EveryShipout initializing macros
-LaTeX Info: Redefining \celsius on input line 190.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 190
+LaTeX Info: Redefining \celsius on input line 194.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 194
 .
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 190.
-Package gensymb Info: Using \Omega for \ohm on input line 190.
+LaTeX Info: Redefining \ohm on input line 194.
+Package gensymb Info: Using \Omega for \ohm on input line 194.
 
 Package gensymb Warning: Not defining \micro.
 
@@ -1889,79 +1896,79 @@ Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.13}).
 
 \c__siunitx_mathsf_int=\count324
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 190.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 194.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 190.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 194.
 
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 190
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 194
 .
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 190
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 194
 .
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 190.
+(Font)              <10.95> on input line 194.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 190.
+(Font)              <8> on input line 194.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 190.
-LaTeX Font Info:    Try loading font information for U+msa on input line 190.
+(Font)              <6> on input line 194.
+LaTeX Font Info:    Try loading font information for U+msa on input line 194.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 190.
+LaTeX Font Info:    Try loading font information for U+msb on input line 194.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 190.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 194.
 
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for OT1+lmss on input line 190
+LaTeX Font Info:    Try loading font information for OT1+lmss on input line 194
 .
 
 (/usr/share/texmf/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 \c__siunitx_mathtt_int=\count325
-LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 190
+LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 194
 .
 
 (/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 198.
+(Font)              <14.4> on input line 202.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 198.
+(Font)              <10> on input line 202.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 198.
+(Font)              <7> on input line 202.
  [1
 
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] <STYLESTUFF/UPC.png, id=11
-2, 321.2pt x 67.25125pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] <STYLESTUFF/UPC.png, id=10
+0, 321.2pt x 67.25125pt>
 File: STYLESTUFF/UPC.png Graphic file (type png)
 
 <use STYLESTUFF/UPC.png>
-Package pdftex.def Info: STYLESTUFF/UPC.png used on input line 198.
+Package pdftex.def Info: STYLESTUFF/UPC.png used on input line 202.
 (pdftex.def)             Requested size: 199.19283pt x 41.70662pt.
  [2 <./STYLESTUFF/UPC.png>]
 \openout2 = `abstract.aux'.
@@ -1975,7 +1982,7 @@ File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.198 \include{abstract}
+l.202 \include{abstract}
                          [1
 
 
@@ -1984,7 +1991,7 @@ l.198 \include{abstract}
 s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.203 \toclof
+l.207 \toclof
               [2
 
 
@@ -2031,94 +2038,58 @@ although it is yet undefined on input line 7.
 
 
 
-]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 35.
- <Figures/K_u.jpg, id=205, 562.1pt x 449.68pt>
-File: Figures/K_u.jpg Graphic file (type jpg)
- <use Figures/K_u.jpg>
-Package pdftex.def Info: Figures/K_u.jpg used on input line 38.
-(pdftex.def)             Requested size: 139.05876pt x 111.24638pt.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 39.
-
-<Figures/K_u_pred.jpg, id=206, 562.1pt x 449.68pt>
-File: Figures/K_u_pred.jpg Graphic file (type jpg)
- <use Figures/K_u_pred.jpg>
-Package pdftex.def Info: Figures/K_u_pred.jpg used on input line 51.
-(pdftex.def)             Requested size: 139.05876pt x 111.24638pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4 <./Figures/K_u.jpg>]
-Package acronym Info: Label `acro:EOMs' newly defined as it shall be overridden
-
-although it is yet undefined on input line 78.
-
-
-LaTeX Warning: Reference `eq::eom2' on page 5 undefined on input line 79.
-
-
-LaTeX Warning: Reference `eq::eom3' on page 5 undefined on input line 79.
-
-[5 <./Figures/K_u_pred.jpg>]) [6] (./mscThesis.bbl) [7
+]) [4] (./mscThesis.bbl) [5
 
 
 
 ]
 \openout2 = `glossary.aux'.
 
- (./glossary.tex
-[8
+ (./glossary.tex [6
 
 
-] [9] (./mscThesis.nls
+] [7] (./mscThesis.nls
 Package acronym Info: Label `acro:MPC' newly defined as it shall be overridden
 although it is yet undefined on input line 16.
- [10])) [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 239.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 239.
- (./mscThesis.aux (./abstract.aux)
-(./introduction.aux) (./problem.aux) (./glossary.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 239.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 239.
+
+[8])) [9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 243.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 243.
+ (./mscThesis.aux (./abstract.aux) (./introduction.aux) (./problem.aux) (./glos
+sary.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 243.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 243.
 Package rerunfilecheck Info: File `mscThesis.out' has not changed.
-(rerunfilecheck)             Checksum: 8717DA9D1E24C919988341A89D540A5C;1620.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 239.
+(rerunfilecheck)             Checksum: 076B72C871953EFA89A16EC47F1815AB;1410.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 243.
  ) 
 Here is how much of TeX's memory you used:
- 47131 strings out of 494910
- 1065348 string characters out of 6179836
- 1672595 words of memory out of 5000000
- 49529 multiletter control sequences out of 15000+600000
- 145611 words of font info for 116 fonts, out of 8000000 for 9000
+ 45170 strings out of 494910
+ 1019725 string characters out of 6179836
+ 1165818 words of memory out of 5000000
+ 47595 multiletter control sequences out of 15000+600000
+ 136527 words of font info for 111 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 54i,12n,89p,10439b,4671s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/s
-hare/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/l
-m/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmex
-10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fon
-ts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb>
-</usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmss
-10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf/f
-onts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pf
-b>
-Output written on mscThesis.pdf (19 pages, 381642 bytes).
+ 54i,12n,84p,10439b,855s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
+c/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
+hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/euler/eurm10.pfb></usr/share/texmf/fonts/type1/public/lm/lm
+bx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/f
+onts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.p
+fb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/ty
+pe1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></u
+sr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/pu
+blic/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/
+texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/
+lmss10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/tex
+mf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lms
+y8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm1
+0.pfb>
+Output written on mscThesis.pdf (17 pages, 304914 bytes).
 PDF statistics:
- 377 PDF objects out of 1000 (max. 8388607)
- 331 compressed objects within 4 object streams
- 87 named destinations out of 1000 (max. 500000)
- 220 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 310 PDF objects out of 1000 (max. 8388607)
+ 270 compressed objects within 3 object streams
+ 67 named destinations out of 1000 (max. 500000)
+ 186 words of extra memory for PDF output out of 10000 (max. 10000000)
 

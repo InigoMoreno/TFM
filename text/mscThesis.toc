@@ -8,11 +8,7 @@
 \contentsline {chapter}{\numberline {2}Problem Formulation}{3}{chapter.2}
 \contentsline {section}{\numberline {2-1}Omni-wheeled robot}{3}{section.2.1}
 \contentsline {section}{\numberline {2-2}Dynamic Model}{3}{section.2.2}
-\contentsline {subsection}{\numberline {2-2-1}Motor Dynamics Identification}{4}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2-2-2}Aerodynamic Drag}{5}{subsection.2.2.2}
-\contentsline {subsubsection}{Drag Inclusion in \ac {EOMs}}{5}{section*.13}
-\contentsline {subsection}{\numberline {2-2-3}Environment Definition}{6}{subsection.2.2.3}
-\contentsline {subsection}{\numberline {2-2-4}Obstacle Modeling}{6}{subsection.2.2.4}
-\contentsline {chapter}{\hbox to\@tempdima {\hfil }Glossary}{9}{appendix*.18}
-\contentsline {section}{\hbox to\@tempdima {\hfil }List of Acronyms}{9}{section*.19}
-\contentsline {section}{\hbox to\@tempdima {\hfil }List of Symbols}{10}{section*.21}
+\contentsline {subsection}{\numberline {2-2-1}Motor Electro-dynamic Identification}{4}{subsection.2.2.1}
+\contentsline {chapter}{\hbox to\@tempdima {\hfil }Glossary}{7}{appendix*.10}
+\contentsline {section}{\hbox to\@tempdima {\hfil }List of Acronyms}{7}{section*.11}
+\contentsline {section}{\hbox to\@tempdima {\hfil }List of Symbols}{8}{section*.13}

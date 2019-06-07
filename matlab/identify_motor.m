@@ -16,15 +16,16 @@ for i=1:size(m,1)
    % m(i,:)=smooth(t,m(i,:));
 end
 
-mr=interp1(t,m',tr,'spline')';
-xr=interp1(t,x',tr,'previous')';
+%mr=interp1(t,m',tr,'spline')';
+%xr=interp1(t,x',tr,'previous')';
 
 
-ds=diff(m,1,2)/Ts*60; %RPM
-ts=conv(t,[.5 .5],'valid');
-xs=interp1(t,x',ts,'previous')';
+%ds=diff(mr,1,2)/Ts*60; %RPM
+%ts=conv(tr,[.5 .5],'valid');
+%xs=interp1(t,x',ts,'previous')';
 
 %hold on
+%line(ts,ds(1,:))
 %scatter(t,m(1,:)/max(m(1,:)))
 %scatter(t,x/max(x))
 
@@ -33,13 +34,11 @@ xs=interp1(t,x',ts,'previous')';
 
 %legend('m','x','mr','xr');
 
+u=symunit;
+
 for i=1:4
-    data_id{i}=iddata(mr(i,:)',xr,Ts,'TimeUnit','seconds','TStart',min(tr));
-    sys{i}=procest(data_id{i},'P1I');
-    if sys{i}.Report.Fit.FitPercent<90
-        warning(['Fit of system is ' num2str(sys{i}.Report.Fit.FitPercent)])
-    end
-    disp(sys{i}.Kp*60);
+    p=polyfit(t,m(i,:),1);
+    w{i}=to_units(p(1)*u.rev/u.s,u.rad/u.s);
 end
 
 %datar=interp1(data(2,:),data([1 3:end]),TY,'previous')';

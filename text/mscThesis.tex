@@ -71,6 +71,8 @@
 
 \usepackage[nameinlink,noabbrev]{cleveref}
 
+\usepackage{upgreek}
+
 \usetikzlibrary{arrows}
 
 \setlength{\parindent}{15pt}
@@ -142,9 +144,11 @@
 \newcommand{\foralli}[1][]{\forall i \in \{1\dots n_{#1}\}}
 \newcommand{\forallj}[1][]{\forall j \in \{1\dots n_{#1}\}}
 \newcommand{\forallk}[1][]{\forall k \in \{1\dots n_{#1}\}}
-%\renewcommand{\dot}{\frac{\partial }{\partial t}}
-%\renewcommand{\ddot}{\frac{\partial ^2}{\partial t^2}}
+\newcommand{\dott}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\ddott}[1]{\frac{\partial ^2 #1}{\partial t^2}}
+\newcommand{\torque}{\Upgamma}
 
+\newcommand{\mat}[2][b]{\begin{#1matrix}#2\end{#1matrix}}
 
 %set spacing between rows in tables
 \renewcommand{\arraystretch}{1.2}

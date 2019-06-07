@@ -17,10 +17,22 @@ Encoder_Buffer Encoder2(47);
 Encoder_Buffer Encoder3(48);
 Encoder_Buffer Encoder4(49);
 
-float T=1; //period of square
-char A=1; //amplitude of square
 
-float Tm=T*1000;
+
+float T=1; //period of square
+char A=0; //amplitude of square
+char Ainc=0;//increase of amplitude after each iteration
+
+char cycleDouble=5; //every cycleDouble iterations, Ainc will double, if you dont want this to happen set it to -1
+
+float Tcycle=5000; //Time of each iteration
+float Tpause=5000; //Pause between iteration
+
+float DutyCycle=100; //dutycycle of pwm
+
+float Tm=T*1000; //period of square in millis
+
+char cyclecount=-5;
 
 void setup() {
   // put your setup code here, to run once:
@@ -47,10 +59,10 @@ void loop() {
       starting_time=millis();
     }
     int tr=millis()-starting_time;
-    if (tr<5000){
+    if (tr<Tcycle){
       float t = (tr % (int)Tm);
       char motorFR;
-      if (t>(Tm/2)) motorFR=A;
+      if (t<(Tm*DutyCycle/100)) motorFR=A;
       else motorFR=-A;
       //if (analogRead(vin)<1023)motorFR=0;
       
@@ -63,10 +75,10 @@ void loop() {
       long encoder3Reading =  Encoder3.readEncoder(); //BL
       long encoder4Reading = -Encoder4.readEncoder(); //BR
       
-      char m1=-motorFR;
+      char m1= motorFR;
       char m2= motorFR;
       char m3= motorFR;
-      char m4=-motorFR;
+      char m4= motorFR;
     
       ST1.motor(2,-m1);  // FL (is negative)
       ST1.motor(1,-m2);  // FR (is negative)
@@ -88,11 +100,16 @@ void loop() {
       Serial.print("\n");
     }
     else {
+      cyclecount=cyclecount+1;
       ST1.motor(2,0);  // FL (is negative)
       ST1.motor(1,0);  // FR (is negative)
       ST2.motor(1,0);  // BL
       ST2.motor(2,0);  // BR
-      A=A+1;
+      if (cyclecount==cycleDouble) {
+        Ainc=Ainc*2;
+        cyclecount=0;
+      }
+      A=A+Ainc;
       if (A==128){
         Serial.println("END");
         b_stop=1;
@@ -100,7 +117,7 @@ void loop() {
       else
         Serial.println("NEXT");
       
-      delay(5000);
+      delay(Tpause);
       starting_time=millis();
     }
   }

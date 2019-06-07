@@ -24,9 +24,7 @@ disp('Reset now')
 pause(1);
 
 amps=1:127;
-Ks=nan(4,length(amps));
-Ts=nan(4,length(amps));
-fits=zeros(4,length(amps));
+ws=nan(4,length(amps));
 index=1;
 while (true)
     data=[];
@@ -53,14 +51,10 @@ while (true)
     no_clear=1;
     identify_motor
     for j=1:4
-        fits(j,index)=sys{j}.Report.Fit.FitPercent;
-        if fits(j,index)>90
-            Ks(j,index)=sys{j}.K;
-            Ts(j,index)=sys{j}.Tp1;
-        end
+        ws(j,index)=w{j};
         set(sca{j},'XData',amps(1:index),...
-                   'YData',Ks(j,1:index));
-        ylim([0,max(Ks,[],'all')+0.5]);
+                   'YData',ws(j,1:index));
+        ylim([0,max(ws,[],'all')+0.5]);
         drawnow()
     end
     if b_end

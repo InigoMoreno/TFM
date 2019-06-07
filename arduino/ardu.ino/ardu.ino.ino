@@ -85,8 +85,8 @@ void loop() {
   char motorRL = convertFloatToByte(driveVal - turnVal + strafeVal);
   
   // command motors
-  ST1.motor(1,motorFL); ST1.motor(2,motorFR);
-  ST2.motor(1,motorRR); ST2.motor(2,motorRL);
+ // ST1.motor(1,motorFL); ST1.motor(2,motorFR);
+  //ST2.motor(1,motorRR); ST2.motor(2,motorRL);
   
   Serial.print(millis());
   Serial.print("\t");
