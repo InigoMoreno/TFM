@@ -1,79 +1,100 @@
+close all
+clear
+
 init_dynamic
+generate_forces
+setupROS
 
-
-x0i=model.lb+(model.ub-model.lb)/2;
-x0i=x0i(index.x.fromz);
-x0i(isnan(x0i))=0;
-x0=repmat(x0i',model.N,1);
-problem.x0=x0; 
+z0i=model.lb+(model.ub-model.lb)/2;
+z0i(isnan(z0i))=0;
+z0=repmat(z0i',model.N,1);
+problem.x0=z0; 
 
 % Set initial and final conditions. This is usually changing from problem
 % instance to problem instance:
-problem.xinit = [2 1 pi/2 0 0 0 0 0]';
-%problem.xfinal = model.xfinal;
 
 % Set parameters
 u=symunit;
 
 keep_units=0;
 
-L=to_si(16.5/2*u.in,keep_units);
-l=to_si(16.5/2*u.in,keep_units); % not real, should be same as L
-r=to_si((6/2-.75/2)*u.in,keep_units);
-m=to_si(16*u.kg-250*u.g,keep_units);
-%Iz=to_si(11.61*u.kg*u.m^2,keep_units);
-Iz=to_si(20*u.kg*u.m^2,keep_units);
-Ik=to_si(1/2*2.3*u.kg*r^2,keep_units);
 
 
-Ke=to_si(24*u.V/(7000*u.rpm),keep_units);
-Km=to_si(4250*u.g*u.cm  *  9.81*u.m/u.s^2 / (13*u.A),keep_units);
-R=to_si(24*u.V/(13*u.A),keep_units);
+state_pub = rospublisher('/State','std_msgs/Float64MultiArray','IsLatching',false);
+state_msg = rosmessage(state_pub);
 
-A=m*r^2/8;
-B=Iz*r^2/(16*(L+l)^2);
-C=Ik;
+reset_sub     = rossubscriber('/Reset','std_msgs/Float64MultiArray',@resetListener);
+params_sub = rossubscriber('/Parameters','std_msgs/Float64MultiArray',@paramsListener);
+run_sub = rossubscriber('/Run','std_msgs/Bool',@runListener);
 
+global p
+global run
+global problem
+global reseted
 
+problem.xinit=[];
+p=[];
+run=[];
+reseted=false;
 
-p=zeros(model.npar,1);
-p(index.p.r)=r;
-p(index.p.L)=L+l;
+disp('Waiting for visual to be opened')
 
-p(index.p.A)=A;
-p(index.p.B)=B;
-p(index.p.C)=C;
-
-p(index.p.K)=Ke; %Ke=Km, we use Ke as it is more direct from the datasheet.
-p(index.p.R)=R;
-%NEED TO SET OTHER PARAMS
-
-problem.all_parameters = repmat(p,model.N,1);
-
-[output,exitflag,info] = CynematicSolver(problem);
-
-TEMP = zeros(model.nvar,model.N);
-for i=1:model.N
-    TEMP(:,i) = output.(['x',sprintf(['%0' num2str(length(num2str(model.N))) 'd'],i)]);
+r=robotics.Rate(2);
+while(isempty(problem.xinit) || isempty(p) || isempty(run))
+    waitfor(r);
 end
-U = TEMP(index.u,:);
-X = TEMP(index.x.fromz,:);
-P=reshape(problem.all_parameters,model.npar,[]);
-Xdot=splitapply(@continuous_dynamics,X,U,P,1:model.N);
+disp('Visual opened');
+r=robotics.Rate(model.frequency);
+while true
+    if reseted
+        x=problem.xinit;
+        z0i=model.lb+(model.ub-model.lb)/2;
+        z0i(isnan(z0i))=0;
+        %z0i(index.x.fromz)=x;
+        z0=repmat(z0i',model.N,1);
+        problem.x0=z0; 
 
-figure();
-hold on
-axis equal
+        reseted=false;
+    end
+    if run
+        problem.xinit=x;
+        problem.all_parameters = repmat(p,model.N,1);
 
-line(X(1,:),X(2,:))
+        [output,exitflag,info] = DynamicSolver(problem);
+        if exitflag == 0
+            disp('MPC: max it');
+        end
+        if ~(exitflag == 1 || exitflag ==0)
+            warning('Exit flag is %i',exitflag) 
+        end
+        disp(info.solvetime/(info.it*N));
+        Z = zeros(model.nvar,model.N);
+        for i=1:model.N
+            Z(:,i) = output.(['x',sprintf(['%0' num2str(length(num2str(model.N))) 'd'],i)]);
+        end
+        U = Z(index.u,:);
+        X = Z(index.x.fromz,:);
+        P=reshape(problem.all_parameters,model.npar,[]);
+        Xdot=splitapply(@continuous_dynamics,X,U,P,1:model.N);
+        x=X(:,2);
+        problem.x0=reshape(Z(:,[2:end end]),[],1);
+    end
+    state_msg.Data=x;
+    state_pub.send(state_msg);
+    drawnow limitrate
+    waitfor(r);
+end
 
-Rot =@(theta) [cos(theta) -sin(theta); sin(theta) cos(theta)];
-square_raw=[L L -L -L L;...
-            l -l -l l l];
-for i=1:model.N
-    x=X(1,i);
-    y=X(2,i);
-    th=X(3,i);
-    square=[x;y]+Rot(th)*square_raw;
-    line(square(1,:),square(2,:));
+function resetListener(~,reset_msg)
+    global problem reseted
+    problem.xinit=reset_msg.Data;
+    reseted=true;
+end
+function paramsListener(~,params_msg)
+    global p
+    p=params_msg.Data;
+end
+function runListener(~,params_msg)
+    global run
+    run=params_msg.Data;
 end

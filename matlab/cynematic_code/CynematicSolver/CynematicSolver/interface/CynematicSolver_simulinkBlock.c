@@ -46,7 +46,7 @@ jurisdiction in case of any dispute.
 typedef CynematicSolverinterface_float CynematicSolvernmpc_float;
 
 extern void CynematicSolver_casadi2forces(double *x, double *y, double *l, double *p, double *f, double *nabla_f, double *c, double *nabla_c, double *h, double *nabla_h, double *hess, solver_int32_default stage, solver_int32_default iteration);
-CynematicSolver_extfunc pt2function = &CynematicSolver_casadi2forces;
+CynematicSolver_extfunc pt2function_CynematicSolver = &CynematicSolver_casadi2forces;
 
 
 
@@ -836,7 +836,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 	#endif
 
 	/* Call solver */
-	exitflag = CynematicSolver_solve(&params, &output, &info, fp , pt2function);
+	exitflag = CynematicSolver_solve(&params, &output, &info, fp , pt2function_CynematicSolver);
 
 	#if SET_PRINTLEVEL_CynematicSolver > 0
 		/* Read contents of printfs printed to file */

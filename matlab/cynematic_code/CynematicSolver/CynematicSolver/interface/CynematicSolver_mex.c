@@ -49,11 +49,15 @@ void copyMArrayToC_double(double *src, double *dest, solver_int32_default dim)
         *dest++ = (double) (*src++) ;
     }
 }
+void copyMValueToC_double(double * src, double * dest)
+{
+	*dest = (double) *src;
+}
 
 
 
 extern void CynematicSolver_casadi2forces(CynematicSolver_float *x, CynematicSolver_float *y, CynematicSolver_float *l, CynematicSolver_float *p, CynematicSolver_float *f, CynematicSolver_float *nabla_f, CynematicSolver_float *c, CynematicSolver_float *nabla_c, CynematicSolver_float *h, CynematicSolver_float *nabla_h, CynematicSolver_float *hess, solver_int32_default stage, solver_int32_default iteration);
-CynematicSolver_extfunc pt2function = &CynematicSolver_casadi2forces;
+CynematicSolver_extfunc pt2function_CynematicSolver = &CynematicSolver_casadi2forces;
 
 
 /* Some memory for mex-function */
@@ -110,7 +114,7 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
     mexErrMsgTxt("PARAMS.x0 must be of size [800 x 1]");
     }
 #endif	 
-    copyMArrayToC_double(mxGetPr(par), params.x0, 800);
+    copyMArrayToC_double(mxGetPr(par), params.x0,800);
 
 	par = mxGetField(PARAMS, 0, "xinit");
 #ifdef MEXARGMUENTCHECKS
@@ -127,7 +131,7 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
     mexErrMsgTxt("PARAMS.xinit must be of size [4 x 1]");
     }
 #endif	 
-    copyMArrayToC_double(mxGetPr(par), params.xinit, 4);
+    copyMArrayToC_double(mxGetPr(par), params.xinit,4);
 
 	par = mxGetField(PARAMS, 0, "all_parameters");
 #ifdef MEXARGMUENTCHECKS
@@ -144,11 +148,12 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
     mexErrMsgTxt("PARAMS.all_parameters must be of size [200 x 1]");
     }
 #endif	 
-    copyMArrayToC_double(mxGetPr(par), params.all_parameters, 200);
+    copyMArrayToC_double(mxGetPr(par), params.all_parameters,200);
+
+
 
 	#if SET_PRINTLEVEL_CynematicSolver > 0
 		/* Prepare file for printfs */
-		/*fp = freopen("stdout_temp","w+",stdout);*/
         fp = fopen("stdout_temp","w+");
 		if( fp == NULL ) 
 		{
@@ -158,10 +163,7 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
 	#endif
 
 	/* call solver */
-	exitflag = CynematicSolver_solve(&params, &output, &info, fp, pt2function);
-
-	/* close stdout */
-	/* fclose(fp); */
+	exitflag = CynematicSolver_solve(&params, &output, &info, fp, pt2function_CynematicSolver);
 	
 	#if SET_PRINTLEVEL_CynematicSolver > 0
 		/* Read contents of printfs printed to file */
@@ -175,7 +177,7 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
 
 	/* copy output to matlab arrays */
 	plhs[0] = mxCreateStructMatrix(1, 1, 100, outputnames);
-	outvar = mxCreateDoubleMatrix(8, 1, mxREAL);
+		outvar = mxCreateDoubleMatrix(8, 1, mxREAL);
 	copyCArrayToM_double( output.x001, mxGetPr(outvar), 8);
 	mxSetField(plhs[0], 0, "x001", outvar);
 
@@ -573,19 +575,19 @@ void mexFunction( solver_int32_default nlhs, mxArray *plhs[], solver_int32_defau
 
 	outvar = mxCreateDoubleMatrix(8, 1, mxREAL);
 	copyCArrayToM_double( output.x100, mxGetPr(outvar), 8);
-	mxSetField(plhs[0], 0, "x100", outvar);	
+	mxSetField(plhs[0], 0, "x100", outvar);
 
 	/* copy exitflag */
 	if( nlhs > 1 )
 	{
-		plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
-		*mxGetPr(plhs[1]) = (double)exitflag;
+	plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
+	*mxGetPr(plhs[1]) = (double)exitflag;
 	}
 
 	/* copy info struct */
 	if( nlhs > 2 )
 	{
-        plhs[2] = mxCreateStructMatrix(1, 1, 10, infofields);
+	        plhs[2] = mxCreateStructMatrix(1, 1, 10, infofields);
          
 		
 		/* iterations */

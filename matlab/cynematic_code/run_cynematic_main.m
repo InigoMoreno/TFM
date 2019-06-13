@@ -1,4 +1,4 @@
-init
+init_cynematic
 
 
 x0i=model.lb+(model.ub-model.lb)/2;
