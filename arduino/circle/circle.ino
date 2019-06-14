@@ -130,7 +130,7 @@ float convertRCtoFloat(unsigned long pulseWidth,unsigned long pulseHigh, unsigne
 }
 
 char convertFloatToByte(float value){
-  float checkVal = (float)255*value;
+  float checkVal = (float)127*value;
   checkVal=min(max(checkVal,-127),127);
   return (char)(checkVal);
 }

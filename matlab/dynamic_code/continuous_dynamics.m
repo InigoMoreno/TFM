@@ -12,7 +12,7 @@ function x_dot = continuous_dynamics(x, u, p)
          a=static_parameters.a;
          b=static_parameters.b;
          
-         V=u;
+         V=u(index.u);
          
          qr=x(index.x.qr);
          qr_dot=x(index.x.qr_dot);
