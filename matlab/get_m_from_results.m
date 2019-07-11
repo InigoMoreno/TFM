@@ -42,7 +42,7 @@ for i=1:length(data_files)
         
         Mjs=eta*(N*Km*Vs-N^2*Ke*Km*wjs)/(R);
         x=wjs;
-        y=Mjs;
+        y=to_units(Mjs,1/u.Newtonmeter,1);
         
         [xData,xUnits]=separateUnits(x);
         [yData,yUnits]=separateUnits(y);
@@ -52,8 +52,8 @@ for i=1:length(data_files)
         f=fit(X',Y','a*x+b*sign(x)');
         %line(ax{j},double(separateUnits(wjs)),double(separateUnits(Mjs)),'Color',colors(i))
         plot(f,X,Y)
-        xlabel(ax{j},symunit2str(xUnits(end)));
-        ylabel(ax{j},symunit2str(yUnits(end))); 
+        xlabel(ax{j},'$\dot \varphi$ [rad/s]','Interpreter','latex','FontSize',12);
+        ylabel(ax{j},'$\tau_{fric}$ [Nm]','Interpreter','latex','FontSize',12);
         as(j)=f.a;
         bs(j)=f.b;
     end

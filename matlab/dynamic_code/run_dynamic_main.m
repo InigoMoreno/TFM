@@ -40,7 +40,6 @@ p=[];
 run=[];
 reseted=false;
 X=[];
-us=[];
 
 disp('Waiting for visual to be opened')
 
@@ -58,6 +57,7 @@ while true
         z0i(index.x.fromz)=x;
         z0=repmat(z0i',model.N,1);
         problem.x0=z0; 
+        X=[];
 
         reseted=false;
     end
@@ -89,7 +89,10 @@ while true
             otherwise
                 warning('Exit flag is unknown: %i',exitflag)
         end
-        %fprintf('Time per it per N: %f e-5\n',info.solvetime/(info.it*N)*1e5);
+        h=info.solvetime/(info.it*N)*1e5;
+        if(h>1e5)
+            fprintf('Time per it per N: %f e-5\n',h);
+        end
         Z = zeros(model.nvar,model.N);
         for i=1:model.N
             Z(:,i) = output.(['x',sprintf(['%0' num2str(length(num2str(model.N))) 'd'],i)]);
@@ -100,22 +103,29 @@ while true
         Xdot=splitapply(@continuous_dynamics,X,U,P,1:model.N);
         if info.res_eq>1e-4
             warning('High equality error');
+        end
+        if info.res_eq>1e-4 || exitflag<0
             x=model.discrete_eq(Z(:,1),P(:,1));
+            
+            z0i(index.x.fromz)=x;
+            x0tmp=repmat(z0i',model.N,1);
+           % 
         else
+            
+            x0tmp=Z(:,[2:end end]);%use last solution
             x=X(:,2);
         end
-        us=[us U(:,1)];
-        x0tmp=Z(:,[2:end end]);%use last solution
-        x0tmp=x0tmp+ 0.05*rand(size(x0tmp)); % Add some random variations
+        x0tmp=x0tmp+ 0.005*rand(size(x0tmp)); % Add some random variations
         problem.x0=reshape(x0tmp,[],1);
     end
     if ~reseted
         state_msg.Data=x;
-        state_pub.send(state_msg);
         if ~isempty(X)
+            %state_msg.Data=X(:,1);
             plan_msg.Data=reshape(X(index.x.qr,:),[],1);
             plan_pub.send(plan_msg);
         end
+        state_pub.send(state_msg);
     end
     drawnow limitrate
     waitfor(r);
@@ -130,7 +140,7 @@ function paramsListener(~,params_msg)
     global p
     p=params_msg.Data;
 end
-function runListener(~,params_msg)
+function runListener(~,run_msg)
     global run
-    run=params_msg.Data;
+    run=run_msg.Data;
 end

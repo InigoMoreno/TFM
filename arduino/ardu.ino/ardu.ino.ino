@@ -11,7 +11,7 @@ float drivePulseLow = 1130, drivePulseHigh=1930;
 float turnPulseLow = 1115, turnPulseHigh=1903;
 float strafePulseLow = 1118, strafePulseHigh=1918;
 
-float pulseDeadbandWidth = 0;
+float pulseDeadbandWidth = 100;
 
 SoftwareSerial mcSerial(NOT_A_PIN, 6);
 Sabertooth ST1(128, mcSerial);
@@ -85,8 +85,8 @@ void loop() {
   char motorRL = convertFloatToByte(driveVal - turnVal + strafeVal);
   
   // command motors
- // ST1.motor(1,motorFL); ST1.motor(2,motorFR);
-  //ST2.motor(1,motorRR); ST2.motor(2,motorRL);
+  ST1.motor(1,motorFL); ST1.motor(2,motorFR);
+  ST2.motor(1,motorRR); ST2.motor(2,motorRL);
   
   Serial.print(millis());
   Serial.print("\t");

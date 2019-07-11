@@ -5,8 +5,8 @@ format shortG
 global model
 %% Time declaration
 model.time_lookup=1;
-model.frequency=20; %Desired frequency in Hz
-model.nNodes=3;
+model.frequency=10; %Desired frequency in Hz
+model.nNodes=6;
 overtime=1;
 integrator='ERK4';
 
@@ -42,8 +42,10 @@ for i = 1:model.nobs
     index.p.obs_dim{i}=max(fold_struct(@max,index.p))+(1:2);
 end
 
-index.p.weight.distance=max(fold_struct(@max,index.p))+1;
+index.p.weight.position=max(fold_struct(@max,index.p))+1;
+index.p.weight.angle=max(fold_struct(@max,index.p))+1;
 index.p.weight.energy=max(fold_struct(@max,index.p))+1;
+index.p.weight.slack=max(fold_struct(@max,index.p))+1;
 index.p.weight.use_begin=max(fold_struct(@max,index.p))+1;
 index.p.weight.obs_margin=max(fold_struct(@max,index.p))+1;
 
@@ -63,10 +65,9 @@ end
 %% Objective function 
 
 for i=1:model.N
-    model.objective{i} = @(z,p) objective_dynamic(z,p) ;
+    model.objective{i} = @(z,p) objective_dynamic(z,p)+p(index.p.weight.use_begin)*objective_dynamic_n(z,p) ;
 end
 model.objective{model.N} = @(z,p) objective_dynamic_n(z,p);
-model.objective{ceil(model.N*0.12)} = @(z,p) objective_dynamic(z,p)+p(index.p.weight.use_begin)*objective_dynamic_n(z,p);
 
 
 %% Dynamics, i.e. equality constraints 
@@ -88,12 +89,15 @@ model.ineq=@(z,p)ineqs_dynamic(z,p);
 
 model.nh=length(model.hl);
 
-
+% This is not used by forces, but it is good to have it in order to keep
+% going if we have high equality error
 switch integrator
     case 'ERK4'
         model.discrete_eq = @(z,p) RK4(z(index.x.fromz),z(1:model.nin),@continuous_dynamics,1/model.frequency,[],model.nNodes);
     case 'ERK3'
-        model.discrete_eq = @(z,p) RK4(z(index.x.fromz),z(1:model.nin),@continuous_dynamics,1/model.frequency,[],model.nNodes);
+        model.discrete_eq = @(z,p) RK3(z(index.x.fromz),z(1:model.nin),@continuous_dynamics,1/model.frequency,[],model.nNodes);
+    case 'ERK2'
+        model.discrete_eq = @(z,p) RK2(z(index.x.fromz),z(1:model.nin),@continuous_dynamics,1/model.frequency,[],model.nNodes);
     otherwise
         model.discrete_eq = @(z,p) RK4(z(index.x.fromz),z(1:model.nin),@continuous_dynamics,1/model.frequency,[],model.nNodes);
 end
@@ -108,6 +112,7 @@ codeoptions.optlevel = 0;   % 0: no optimization, 1: optimize for size, 2: optim
 
 codeoptions.overwrite = 1;
 codeoptions.BuildSimulinkBlock = 0;
+codeoptions.noVariableElimination = 1; 
 
 filepath=fileparts(mfilename('fullpath'));
 disp(filepath);
